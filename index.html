@@ -1,0 +1,57 @@
+<HTML xmlns="http://www.w3.org/1999/xhtml">
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script src="./js/jquery-1.11.3.js" language="javascript"></script>
+<script src="./js/jquery.imageCrop.js" language="javascript"></script>
+<SCRIPT type=text/javascript>
+$(function(){
+   $('#dragDiv').imageDrop({
+        cover:'#cover',
+		zoomBtn:{zin:'#add',zout:'#del',zinCallBack:function(msg){},zoutCallBack:function(msg){}}, //放大、缩小按钮选择器  
+		zooMultiple:1.1,		//点击放大缩小后的倍率
+		dropFrame:[200,200], 	//截取框的大小 、和生成后的照片成比例
+		imgSrc:'1.jpg',
+		tips:'#tips',
+		cropArr:['#cropMultiple','#cropsx','#cropsy','#cropx','#cropy'], //返回的5个值用于截屏( 倍率、抓取宽度、抓取高度，抓取坐标x,抓取坐标y)
+		mouseClickMove:{left:'#left',right:'#right',up:'#up',down:'#down',step:10}
+	});	
+})
+
+function doCrop(){
+	$.post('crop.php',{sx:$("#cropx").val(),sy:$("#cropy").val(),sw:$("#cropsx").val(),sh:$("#cropsy").val(),hidsrc:'1.jpg'},function(msg){
+		$("#afterCrop").html('<img src="'+msg+'?r='+Math.random()+'" />');	
+	})
+}
+
+</SCRIPT>
+</HEAD>
+<body>
+
+<DIV style="border: blue 1px dashed; float:left; position: relative;">
+    <div style="width: 200px;height:200px;background:rgba(0,0,0,0.3);position: absolute;z-index:100" id="cover"></div>
+    <DIV id="dragDiv"></DIV>
+</DIV>
+<div id="afterCrop" style="width:500px; float:left; margin-left:20px;"></div>
+<div style="clear:both;">
+<input type="button" name="add" id="add" value="放大">
+<input type="button" name="del" id="del" value="缩小">
+ 
+  <br>
+  <input name="cropsx" type="text" id="cropsx" value="0">
+  <br>
+  <input name="cropsy" type="text" id="cropsy" value="0">
+  <br>
+  <input name="cropx" type="text" id="cropx" value="0">
+  <br>
+<input name="cropy" type="text" id="cropy" value="0">
+  
+  <input type="button" onClick="doCrop()" value="截取">
+</p> (可在照片上按下鼠标进行拖拽)
+<input type="button"  value="上" id="up">
+<input type="button"  value="下" id="down">
+<input type="button"  value="左" id="left">
+<input type="button"  value="右" id="right">
+</div>
+</body>
+</html>
+
